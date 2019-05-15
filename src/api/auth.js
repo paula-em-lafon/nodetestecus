@@ -39,7 +39,7 @@ auth.get('/verifytoken', (req,res) =>{
     res.status(200)
     .json({
       success: true,
-      data: "Super secret data!"
+      data: req.user
     })
 })
 

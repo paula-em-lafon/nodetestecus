@@ -1,13 +1,20 @@
 import multer from 'multer';
 import path from 'path';
+import signed from 'signed';
 import { Router } from 'express'
 import { picture } from '../models/pictures'
 import { verifyJWT_MW } from '../middleware/auth'
-import mongoose from 'mongoose'
 var gm = require('gm').subClass({imageMagick: true});
 
 const pics = Router()
 // Set The Storage Engine for uploads.
+
+const signature = signed({
+  secret: 'something',
+  ttl: 600
+});
+
+exports.signature = signature;
 
 
 const storage = multer.diskStorage({
@@ -42,24 +49,20 @@ function checkFileType(file, cb){
   }
 }
 
-function createThumb(filename, instance){
+// in an effort to prevent horrible errors from happening 
+function createThumb(filename, instance, tries, callback){
   gm(path.resolve('./storage/media/' + filename))
     .resize(120, null)
     .write(path.resolve('./storage/media/thumb' + '-' + filename), function (err) {
       if (!err) {
         console.log('thumbnail created successfully')
         instance.updateOne({thumbname: 'thumb' + '-' + filename,
-                  thumbswitch: true},
-          () => {
-            if(!err){  
-              console.log('thumb updated')
-              return
-            }
-            else{
-              console.log(err)
-              return
-            }
-          })
+                  thumbswitch: true
+          }).catch(() => createThumb(filename, instance, tries-1, callback))
+          .then(() => {
+            console.log('thumb updated')
+            if(callback) callback()})
+          .catch(() => console.log(err))
         }
       else{console.log(err)}
     })
@@ -82,8 +85,8 @@ pics.post('/upload', (req, res) => {
           });
           pic.save()
           .then(() => res.status(201).json({ message: pic }))
-          .catch(() => {console.log('Something went wrong')})
-          .then(createThumb(req.body.databasepicname, pic, () => {console.log("DONE")}))
+          .catch((err) => {console.log(err)})
+          .then(createThumb(req.body.databasepicname, pic, 20, () => {console.log("DONE")}))
           };
         }
       });
@@ -93,13 +96,20 @@ pics.get("/", verifyJWT_MW);
 pics.get('/', (req, res) => {
   picture.find({})
   .exec((err, pics) => {
+    pics = picture.activePictureUrl(pics)
     if(err){
       return res.status(500).json({ message: err });
     }
     else{
-      res.status(201).json({ message: pics })};
-    })
-  });
+      res.status(201).json({ message: pics })
+    };
+  })
+});
 
+
+pics.get('/file/',signature.verifier(), (req, res, next) => {
+  let filename = req.query.filename;
+  res.sendFile(path.resolve('./storage/media') + '/' + filename);
+})
 
 export default pics;

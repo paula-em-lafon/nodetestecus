@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { signature } from "../api/pictures"
+var url_signature = require('../middleware/url-signature/index');
 import User from './users'
 
 
@@ -19,10 +19,10 @@ pictureSchema.statics.activePictureUrl = function(data) {
             _id: picture._id,
             title: picture.title,
             description: picture.description,
-            filename:signature.sign(
-                'http://localhost:8080/api/pictures/file/?filename=' + picture.filename),
-            thumbname:signature.sign(
-                'http://localhost:8080/api/pictures/file/?filename=' + picture.thumbname),
+            filename:url_signature.urlSign(
+                'http://localhost:8010/api/pictures/file/?filename=' + picture.filename),
+            thumbname:url_signature.urlSign(
+                'http://localhost:8010/api/pictures/file/?filename=' + picture.thumbname),
             user: picture.user
         }
     })

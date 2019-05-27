@@ -1,0 +1,69 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "url-signature",
+        "scope": null,
+        "escapedName": "url-signature",
+        "name": "url-signature",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/home/emi/projects/nodetest"
+    ]
+  ],
+  "_from": "url-signature@latest",
+  "_id": "url-signature@2015.12.2",
+  "_inCache": true,
+  "_location": "/url-signature",
+  "_nodeVersion": "5.3.0",
+  "_npmUser": {
+    "name": "kaizhu",
+    "email": "kaizhu256@gmail.com"
+  },
+  "_npmVersion": "3.3.12",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "url-signature",
+    "scope": null,
+    "escapedName": "url-signature",
+    "name": "url-signature",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/url-signature/-/url-signature-2015.12.2.tgz",
+  "_shasum": "31a72e36e79750b539e19493ce9ef9cba943707f",
+  "_shrinkwrap": null,
+  "_spec": "url-signature",
+  "_where": "/home/emi/projects/nodetest",
+  "author": {
+    "name": "kaizhu256@gmail.com"
+  },
+  "dependencies": {},
+  "description": "minimal hmac-256 url signer and validator with zero npm dependencies",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "31a72e36e79750b539e19493ce9ef9cba943707f",
+    "tarball": "https://registry.npmjs.org/url-signature/-/url-signature-2015.12.2.tgz"
+  },
+  "gitHead": "556c55e4a880347008b95f803feeadf749e23cc0",
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "kaizhu",
+      "email": "kaizhu256@gmail.com"
+    }
+  ],
+  "name": "url-signature",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "scripts": {},
+  "version": "2015.12.2"
+}

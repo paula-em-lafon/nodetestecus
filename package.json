@@ -38,6 +38,7 @@
     "crypto": "^1.0.1",
     "dotenv": "^8.0.0",
     "express": "^4.13.3",
+    "full-url": "^1.0.0",
     "gm": "^1.23.1",
     "jsonwebtoken": "^8.5.1",
     "loadash": "^1.0.0",
@@ -46,8 +47,7 @@
     "morgan": "^1.8.0",
     "multer": "^1.4.1",
     "querystring": "^0.2.0",
-    "resource-router-middleware": "^0.6.0",
-    "signed": "^1.0.0"
+    "resource-router-middleware": "^0.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

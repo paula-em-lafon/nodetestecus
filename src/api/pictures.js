@@ -1,21 +1,14 @@
 import multer from 'multer';
 import path from 'path';
-import signed from 'signed';
+import full_url from 'full-url';
 import { Router } from 'express'
 import { picture } from '../models/pictures'
 import { verifyJWT_MW } from '../middleware/auth'
+var url_signature = require('../middleware/url-signature/index');
 var gm = require('gm').subClass({imageMagick: true});
 
 const pics = Router()
 // Set The Storage Engine for uploads.
-
-const signature = signed({
-  secret: 'something',
-  ttl: 600
-});
-
-exports.signature = signature;
-
 
 const storage = multer.diskStorage({
     destination: './storage/media',
@@ -107,9 +100,15 @@ pics.get('/', (req, res) => {
 });
 
 
-pics.get('/file/',signature.verifier(), (req, res, next) => {
-  let filename = req.query.filename;
-  res.sendFile(path.resolve('./storage/media') + '/' + filename);
+pics.get('/file/', (req, res, next) => {
+  if(url_signature.urlValidate(full_url(req))){
+    let filename = req.query.filename;
+    res.sendFile(path.resolve('./storage/media') + '/' + filename);
+  }
+  else{
+    return res.status(500).json({ message: 'invalid request' });
+  }
+
 })
 
 export default pics;

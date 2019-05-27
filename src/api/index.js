@@ -2,6 +2,7 @@ import { version } from '../../package.json';
 import { Router } from 'express';
 import facets from './facets';
 import auth from './auth'
+import pics from './pictures'
 
 export default ({ config, db }) => {
 	let api = Router();
@@ -13,6 +14,8 @@ export default ({ config, db }) => {
 	api.get('/', (req, res) => {
 		res.json({ version });
 	});
+
+	api.use('/pictures', pics)
 
 	api.use('/auth', auth)
 	return api;

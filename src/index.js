@@ -20,6 +20,7 @@ app.use(cors({
 	exposedHeaders: config.corsHeaders
 }));
 
+// json body parser
 app.use(bodyParser.json({
 	limit : config.bodyLimit
 }));
@@ -33,6 +34,7 @@ initializeDb( db => {
 	// api router
 	app.use('/api', api({ config, db }));
 
+	// actual DB initialization on port on env
 	app.server.listen(process.env.PORT || config.port, () => {
 		console.log(`Started on port ${app.server.address().port}`);
 	});

@@ -7,6 +7,11 @@ import bcrypt from 'bcrypt-nodejs'
 
 const auth = Router()
 
+// api/auth/login checks username exists and passwor too. 
+// Creates jwt for session
+//takes params:
+  // username
+  // password
 auth.post('/login', (req, res)=> 
   {
     if (!req.body.username || !req.body.password) {
@@ -33,16 +38,9 @@ auth.post('/login', (req, res)=>
     })
   })
 
-
-auth.get("/verifytoken", verifyJWT_MW);
-auth.get('/verifytoken', (req,res) =>{
-    res.status(200)
-    .json({
-      success: true,
-      data: req.user
-    })
-})
-
+// register the a new user. Takes takes params:
+  // username
+  // password
 auth.post('/register', (req, res) => {
 	if (!req.body.username || !req.body.password) {
 		return res.status(400).json({ message: 'Missing required fields' })
@@ -64,7 +62,7 @@ auth.post('/register', (req, res) => {
   })
 })
 
-
+// username already exists helper function
 let findUser = (username) => {
     return User.findOne({ username })
       .then(user => {

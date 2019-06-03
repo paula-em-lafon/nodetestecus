@@ -42,7 +42,8 @@ function checkFileType(file, cb){
   }
 }
 
-// in an effort to prevent horrible errors from happening 
+// in an effort to prevent horrible errors from happening
+// in case of failure the function retries by calling itself recursively
 function createThumb(filename, instance, tries, callback){
   gm(path.resolve('./storage/media/' + filename))
     .resize(120, null)
@@ -61,6 +62,11 @@ function createThumb(filename, instance, tries, callback){
     })
   };
 
+// upload a picture takes params:
+  // filename: (uploaded from user files)
+  // title
+  // description
+  // user: (from the jwt)
 pics.post("/upload", verifyJWT_MW);
 pics.post('/upload', (req, res) => {
     upload.single('image')(req, res, (err) => {
@@ -85,9 +91,10 @@ pics.post('/upload', (req, res) => {
       });
   });
 
+
 pics.get("/", verifyJWT_MW);
 pics.get('/', (req, res) => {
-  picture.find({})
+  picture.find({user: req.user.user._id })
   .exec((err, pics) => {
     pics = picture.activePictureUrl(pics)
     if(err){

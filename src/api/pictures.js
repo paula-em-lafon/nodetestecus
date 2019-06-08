@@ -91,7 +91,7 @@ pics.post('/upload', (req, res) => {
       });
   });
 
-
+// Return pictures with working url for any env
 pics.get("/", verifyJWT_MW);
 pics.get('/', (req, res) => {
   picture.find({user: req.user.user._id })
@@ -106,7 +106,7 @@ pics.get('/', (req, res) => {
   })
 });
 
-
+// Return a specific file
 pics.get('/file/', (req, res, next) => {
   if(url_signature.urlValidate(full_url(req))){
     let filename = req.query.filename;
